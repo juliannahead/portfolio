@@ -1,6 +1,6 @@
 # Julianna Head — Portfolio
 
-A clean, futuristic, minimal portfolio site for **juliannahead.com**, inspired by Apple's design language.
+A clean, futuristic, minimal portfolio site for **juliannahead.com**
 
 - **Display / technical type:** Space Grotesk + JetBrains Mono
 - **Body type:** Inter
