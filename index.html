@@ -59,7 +59,7 @@
     "@context": "https://schema.org",
     "@type": "ProfessionalService",
     "@id": "https://juliannahead.com/#business",
-    "name": "Julianna Head — Digital Operations & Growth",
+    "name": "Julianna Head, Digital Operations & Growth",
     "url": "https://juliannahead.com",
     "description": "Julianna Head is a Digital Operations & Growth Architect who works across design, engineering, marketing, product, and data. She finds where revenue leaks out of funnels and operations, then designs the fix, builds it, markets it, measures it, and keeps improving it, with no handoffs between agencies.",
     "founder": { "@id": "https://juliannahead.com/#julianna" },
@@ -169,12 +169,12 @@
   }
   </script>
 
-  <!-- Fonts: Space Grotesk (display), JetBrains Mono (technical), Inter (body) -->
+  <!-- Fonts: Space Grotesk (display), Inter (body) -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
 
-  <link rel="stylesheet" href="styles.css?v=42" />
+  <link rel="stylesheet" href="styles.css?v=43" />
 </head>
 <body>
   <!-- Navigation -->
@@ -199,34 +199,17 @@
 
   <main id="top">
     <!-- Hero -->
-    <section class="hero">
-      <div class="hero__aurora" aria-hidden="true">
-        <div class="hero__aurora-inner"></div>
-      </div>
-      <div class="hero__main">
-        <div class="hero__content">
-          <h1 class="hero__title reveal">Julianna Head</h1>
-        </div>
-        <div class="hero__scroll" aria-hidden="true">
-          <span class="mono">SCROLL</span>
-          <div class="hero__scroll-line"></div>
-        </div>
-      </div>
-      <div class="ticker" aria-hidden="true">
-        <div class="ticker__track">
-          <span>Web Developer</span><i>/</i><span>Graphic Designer</span><i>/</i><span>Digital Marketing</span><i>/</i><span>Product Manager</span><i>/</i><span>SEO Specialist</span><i>/</i><span>Data Analyst</span><i>/</i><span>UI Designer</span><i>/</i><span>Content Creator</span><i>/</i><span>Consultant</span><i>/</i>
-          <span>Web Developer</span><i>/</i><span>Graphic Designer</span><i>/</i><span>Digital Marketing</span><i>/</i><span>Product Manager</span><i>/</i><span>SEO Specialist</span><i>/</i><span>Data Analyst</span><i>/</i><span>UI Designer</span><i>/</i><span>Content Creator</span><i>/</i><span>Consultant</span><i>/</i>
-        </div>
-      </div>
-    </section>
-
-    <!-- Intro statement -->
-    <section class="statement" id="intro">
-      <div class="container">
-        <p class="statement__text reveal">
+    <section class="hero" id="intro">
+      <div class="container hero__inner">
+        <h1 class="hero__title reveal">Julianna Head</h1>
+        <p class="hero__lede reveal">
           I connect a business's website, ads, CRM, and team into one
           <strong>system</strong> built to <strong>grow</strong>.
         </p>
+        <div class="hero__actions reveal">
+          <a href="#work" class="btn btn--primary">See my work</a>
+          <a href="#contact" class="btn btn--ghost">Contact</a>
+        </div>
       </div>
     </section>
 
@@ -236,7 +219,6 @@
         <div class="work__pin" id="workPin">
           <div class="container">
             <div class="section-head reveal">
-              <p class="eyebrow">Featured</p>
               <h2 class="section-title">Six systems, built start to finish.</h2>
               <p class="section-lede">
                 Client work for wellness, professional services, consumer, and growth-stage
@@ -259,8 +241,7 @@
           <div class="work__viewport" id="workViewport" tabindex="0">
             <div class="work__track" id="workTrack" role="region" aria-label="Featured work projects" aria-live="polite">
           <article class="case-card is-active">
-            <span class="case-card__index mono">01</span>
-            <p class="case-card__client mono">Wellness &amp; Hospitality Client</p>
+            <p class="case-card__client">Wellness &amp; Hospitality Client</p>
             <h3 class="case-card__title">Staff Portal &amp; Management Operations</h3>
             <p class="case-card__desc">
               I designed and built internal web apps for a multi-location wellness brand.
@@ -273,8 +254,7 @@
           </article>
 
           <article class="case-card">
-            <span class="case-card__index mono">02</span>
-            <p class="case-card__client mono">Professional Services Client</p>
+            <p class="case-card__client">Professional Services Client</p>
             <h3 class="case-card__title">Client Scheduling System</h3>
             <p class="case-card__desc">
               A scheduling platform for a service business. Confirmations, reminders, and
@@ -286,8 +266,7 @@
           </article>
 
           <article class="case-card">
-            <span class="case-card__index mono">03</span>
-            <p class="case-card__client mono">Growth-Stage Lifestyle Brand</p>
+            <p class="case-card__client">Growth-Stage Lifestyle Brand</p>
             <h3 class="case-card__title">GoHighLevel CRM Build</h3>
             <p class="case-card__desc">
               A new GoHighLevel CRM for a growing consumer brand, with pipelines and
@@ -299,8 +278,7 @@
           </article>
 
           <article class="case-card">
-            <span class="case-card__index mono">04</span>
-            <p class="case-card__client mono">Multi-Location Operations Client</p>
+            <p class="case-card__client">Multi-Location Operations Client</p>
             <h3 class="case-card__title">VoIP &amp; IVR Phone System</h3>
             <p class="case-card__desc">
               A new VoIP phone system with IVR for a growing operations business. I mapped
@@ -313,8 +291,7 @@
           </article>
 
           <article class="case-card">
-            <span class="case-card__index mono">05</span>
-            <p class="case-card__client mono">B2C Lead Generation Client</p>
+            <p class="case-card__client">B2C Lead Generation Client</p>
             <h3 class="case-card__title">Sales &amp; Marketing Funnels + Paid Ads</h3>
             <p class="case-card__desc">
               Funnels, lead generation, and Google &amp; Meta ads for a direct-to-consumer
@@ -327,8 +304,7 @@
           </article>
 
           <article class="case-card">
-            <span class="case-card__index mono">06</span>
-            <p class="case-card__client mono">Consumer Mobile Product Client</p>
+            <p class="case-card__client">Consumer Mobile Product Client</p>
             <h3 class="case-card__title">Mobile App, Product Management</h3>
             <p class="case-card__desc">
               I'm taking a consumer mobile app from concept toward launch. I own the roadmap
@@ -345,7 +321,7 @@
           <div class="work__progress" id="workProgress" aria-hidden="true">
             <div class="work__progress-bar" id="workProgressBar"></div>
           </div>
-          <p class="work__hint mono reveal" id="workHint" aria-hidden="true">Keep scrolling →</p>
+          <p class="work__hint reveal" id="workHint" aria-hidden="true">Keep scrolling →</p>
         </div>
           </div>
         </div>
@@ -356,7 +332,6 @@
     <section class="capabilities" id="capabilities">
       <div class="container">
         <div class="section-head reveal">
-          <p class="eyebrow">Skills</p>
           <h2 class="section-title">I speak design, code, marketing, and data.</h2>
           <p class="section-lede">
             I like hard problems, and I like switching between kinds of work. Because I
@@ -371,7 +346,6 @@
             <div class="constellation__orbit-ring" aria-hidden="true"></div>
             <div class="constellation__hub" aria-hidden="true">
               <span class="constellation__hub-dot"></span>
-              <p class="constellation__hub-label mono">Every layer</p>
             </div>
             <div class="constellation__nodes" id="constellationNodes"></div>
             <aside class="constellation__detail" id="constellationDetail" aria-live="polite" hidden>
@@ -380,7 +354,7 @@
               <ul class="constellation__detail-list" id="constellationDetailList"></ul>
             </aside>
           </div>
-          <p class="constellation__hint mono" id="constellationHint">Click a node to explore</p>
+          <p class="constellation__hint" id="constellationHint">Click a node to explore</p>
         </div>
 
         <div class="pillars pillars--fallback">
@@ -517,7 +491,6 @@
     <section class="contact" id="contact">
       <div class="container">
         <div class="contact__inner reveal">
-          <p class="eyebrow">Contact</p>
           <h2 class="contact__title">Let's build<br />something together.</h2>
           <p class="contact__lede">
             I'm taking on new clients for consulting, product builds, brand and growth
@@ -533,23 +506,20 @@
 
             <div class="form-row">
               <label class="field">
-                <span class="field__label mono">Name</span>
+                <span class="field__label">Name</span>
                 <input type="text" name="name" required autocomplete="name" placeholder="Your name" />
               </label>
               <label class="field">
-                <span class="field__label mono">Email</span>
+                <span class="field__label">Email</span>
                 <input type="email" name="email" required autocomplete="email" placeholder="you@email.com" />
               </label>
             </div>
             <label class="field">
-              <span class="field__label mono">Message</span>
+              <span class="field__label">Message</span>
               <textarea name="message" rows="4" required placeholder="Tell me about your project…"></textarea>
             </label>
 
-            <div class="aurora-btn">
-              <div class="aurora-btn__glow" aria-hidden="true"></div>
-              <button type="submit" class="aurora-btn__button contact__submit">Send message</button>
-            </div>
+            <button type="submit" class="btn btn--primary contact__submit">Send message</button>
             <p class="form-status" id="formStatus" role="status" aria-live="polite"></p>
           </form>
 
@@ -564,9 +534,9 @@
 
   <footer class="footer">
     <div class="container footer__inner">
-      <span class="mono">© <span id="year"></span> Julianna Head</span>
-      <span class="mono footer__credit">Font: <a href="https://fontstruct.com/fontstructions/show/954016" target="_blank" rel="noopener noreferrer">Computer says no</a> by Christian Munk (CC BY-SA 3.0)</span>
-      <span class="mono footer__domain">juliannahead.com</span>
+      <span>© <span id="year"></span> Julianna Head</span>
+      <span class="footer__credit">Font: <a href="https://fontstruct.com/fontstructions/show/954016" target="_blank" rel="noopener noreferrer">Computer says no</a> by Christian Munk (CC BY-SA 3.0)</span>
+      <span class="footer__domain">juliannahead.com</span>
     </div>
   </footer>
 
