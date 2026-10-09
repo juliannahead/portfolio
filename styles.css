@@ -107,6 +107,15 @@ ul { list-style: none; }
   backdrop-filter: saturate(180%) blur(20px);
   -webkit-backdrop-filter: saturate(180%) blur(20px);
 }
+/* Over the black hero (class set in script.js); the white mobile menu keeps the light nav */
+body:not(.menu-open) .nav.is-dark.is-scrolled { background: rgba(0, 0, 0, 0.6); }
+body:not(.menu-open) .nav.is-dark .nav__logo-mark,
+body:not(.menu-open) .nav.is-dark .nav__links a { color: #a1a1a6; }
+body:not(.menu-open) .nav.is-dark .nav__links a:hover { color: #f5f5f7; }
+body:not(.menu-open) .nav.is-dark .nav__cta { color: #f5f5f7 !important; border-color: rgba(255, 255, 255, 0.28); }
+body:not(.menu-open) .nav.is-dark .nav__cta:hover { background: #f5f5f7; color: #000 !important; border-color: #f5f5f7; }
+body:not(.menu-open) .nav.is-dark .nav__toggle span { background: #f5f5f7; }
+
 .nav__inner {
   max-width: var(--maxw);
   margin: 0 auto;
@@ -224,7 +233,7 @@ ul { list-style: none; }
   position: relative;
   overflow: hidden;
   padding: calc(var(--nav-h) + clamp(56px, 10vh, 96px)) 0 clamp(72px, 12vh, 128px);
-  border-bottom: 1px solid var(--line);
+  background: #000;
 }
 
 /* Lava lamp blobs: WebGL canvas behind the hero copy (see script.js) */
@@ -239,9 +248,9 @@ ul { list-style: none; }
 }
 .hero__blobs.is-ready { opacity: 1; }
 @media (max-width: 860px) {
-  .hero__blobs.is-ready { opacity: 0.35; } /* sits behind the copy on small screens */
+  .hero__blobs.is-ready { opacity: 0.45; } /* sits behind the copy on small screens */
 }
-.hero.is-grab { cursor: grab; }
+.hero.is-grab { cursor: grab; user-select: none; }
 .hero.is-dragging { cursor: grabbing; user-select: none; }
 
 .hero__inner { position: relative; }
@@ -267,7 +276,7 @@ ul { list-style: none; }
   line-height: 1.05;
   letter-spacing: 0.06em;
   margin: 0;
-  color: var(--ink);
+  color: #f5f5f7;
   text-transform: uppercase;
 }
 
@@ -279,9 +288,14 @@ ul { list-style: none; }
   letter-spacing: -0.02em;
   max-width: 26ch;
   margin-top: clamp(24px, 4vh, 40px);
-  color: var(--grey);
+  color: #a1a1a6;
 }
-.hero__lede strong { color: var(--ink); font-weight: 500; }
+.hero__lede strong { color: #f5f5f7; font-weight: 500; }
+
+/* Buttons flip to light on the black hero */
+.hero .btn--primary { background: #f5f5f7; color: #000; }
+.hero .btn--ghost { border-color: rgba(255, 255, 255, 0.28); color: #f5f5f7; }
+.hero .btn--ghost:hover { border-color: #f5f5f7; }
 
 .hero__actions {
   display: flex;

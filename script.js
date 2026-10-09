@@ -13,10 +13,13 @@
   if (yearEl) yearEl.textContent = new Date().getFullYear();
 
   /* ---- Nav background on scroll + progress bar ---- */
+  const heroEl = document.querySelector(".hero");
   function onScroll() {
     const y = window.scrollY || window.pageYOffset;
 
     if (nav) nav.classList.toggle("is-scrolled", y > 24);
+    // Light nav text while it sits over the black hero
+    if (nav && heroEl) nav.classList.toggle("is-dark", y < heroEl.offsetHeight - nav.offsetHeight);
   }
   window.addEventListener("scroll", onScroll, { passive: true });
   onScroll();
@@ -94,10 +97,13 @@
       "    f+=u_b[i].z*u_b[i].z/dot(d,d);",
       "  }",
       "  float a=smoothstep(.96,1.04,f);",
-      "  vec3 top=vec3(.169,.435,1.);",   // --accent #2b6fff
-      "  vec3 bot=vec3(.62,.75,1.);",
-      "  vec3 col=mix(top,bot,clamp(c.y/u_h,0.,1.));",
-      "  gl_FragColor=vec4(col*a,a);",
+      "  float g=pow(smoothstep(.2,1.,f),2.)*.55;",                       // soft glow around the goo
+      "  float y=clamp(c.y/u_h,0.,1.);",
+      "  vec3 col=mix(vec3(1.,.55,.12),vec3(.95,.16,.05),y);",            // orange on top, red below
+      "  col=mix(col,vec3(1.,.82,.45),smoothstep(1.2,4.,f)*.3);",         // hotter core
+      "  vec3 glow=mix(vec3(1.,.35,.05),vec3(.9,.1,.03),y);",
+      "  float al=a+g*(1.-a);",
+      "  gl_FragColor=vec4(col*a+glow*g*(1.-a),al);",
       "}"
     ].join("\n");
 
