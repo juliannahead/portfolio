@@ -221,9 +221,30 @@ ul { list-style: none; }
    Hero
    ============================================================ */
 .hero {
+  position: relative;
+  overflow: hidden;
   padding: calc(var(--nav-h) + clamp(56px, 10vh, 96px)) 0 clamp(72px, 12vh, 128px);
   border-bottom: 1px solid var(--line);
 }
+
+/* Lava lamp blobs: WebGL canvas behind the hero copy (see script.js) */
+.hero__blobs {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  opacity: 0;
+  transition: opacity 1.2s var(--ease);
+}
+.hero__blobs.is-ready { opacity: 1; }
+@media (max-width: 860px) {
+  .hero__blobs.is-ready { opacity: 0.35; } /* sits behind the copy on small screens */
+}
+.hero.is-grab { cursor: grab; }
+.hero.is-dragging { cursor: grabbing; user-select: none; }
+
+.hero__inner { position: relative; }
 
 .hero__inner {
   display: flex;
