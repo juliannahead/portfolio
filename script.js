@@ -13,13 +13,10 @@
   if (yearEl) yearEl.textContent = new Date().getFullYear();
 
   /* ---- Nav background on scroll + progress bar ---- */
-  const heroEl = document.querySelector(".hero");
   function onScroll() {
     const y = window.scrollY || window.pageYOffset;
 
     if (nav) nav.classList.toggle("is-scrolled", y > 24);
-    // Light nav text while it sits over the black hero
-    if (nav && heroEl) nav.classList.toggle("is-dark", y < heroEl.offsetHeight - nav.offsetHeight);
   }
   window.addEventListener("scroll", onScroll, { passive: true });
   onScroll();
