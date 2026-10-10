@@ -80,27 +80,37 @@
     const finePointer = window.matchMedia("(hover: hover) and (pointer: fine)");
 
     const vert = "attribute vec2 p;void main(){gl_Position=vec4(p,0.,1.);}";
+    // Glossy gel goo: each blob has its own color, blended where they merge,
+    // and the field's gradient gives a fake 3D normal for the shine.
     const frag = [
       "precision highp float;",
       "uniform vec3 u_b[" + MAX + "];",
+      "uniform vec3 u_c[" + MAX + "];",
       "uniform int u_n;",
       "uniform float u_h;",
+      "uniform float u_s;",
       "void main(){",
       "  vec2 c=vec2(gl_FragCoord.x,u_h-gl_FragCoord.y);",
-      "  float f=0.;",
+      "  float f=0.,fs=0.;vec2 g=vec2(0.);vec3 col=vec3(0.);",
       "  for(int i=0;i<" + MAX + ";i++){",
       "    if(i>=u_n)break;",
       "    vec2 d=c-u_b[i].xy;",
-      "    f+=u_b[i].z*u_b[i].z/dot(d,d);",
+      "    float r2=u_b[i].z*u_b[i].z;",
+      "    f+=r2/(dot(d,d)+1.);",
+      "    float q=dot(d,d)+r2*.5;",                                         // softened copy for color and shading
+      "    float v=r2/q;",
+      "    fs+=v;col+=u_c[i]*v;g-=2.*v/q*d;",
       "  }",
+      "  col/=max(fs,1e-4);",
       "  float a=smoothstep(.96,1.04,f);",
-      "  float g=pow(smoothstep(.2,1.,f),2.)*.55;",                       // soft glow around the goo
-      "  float y=clamp(c.y/u_h,0.,1.);",
-      "  vec3 col=mix(vec3(1.,.55,.12),vec3(.95,.16,.05),y);",            // orange on top, red below
-      "  col=mix(col,vec3(1.,.82,.45),smoothstep(1.2,4.,f)*.3);",         // hotter core
-      "  vec3 glow=mix(vec3(1.,.35,.05),vec3(.9,.1,.03),y);",
-      "  float al=a+g*(1.-a);",
-      "  gl_FragColor=vec4(col*a+glow*g*(1.-a),al);",
+      "  float glow=pow(smoothstep(.2,1.,f),2.)*.55;",                   // soft glow around the goo
+      "  vec3 n=normalize(vec3(-g/(fs*fs)*u_s*.6,1.));",
+      "  vec3 L=normalize(vec3(-.45,-.6,.65));",                           // light from the top left
+      "  float diff=max(dot(n,L),0.);",
+      "  float spec=pow(max(dot(n,normalize(L+vec3(0.,0.,1.))),0.),48.);",
+      "  float rim=pow(1.-n.z,2.);",
+      "  vec3 body=col*(.45+.65*diff)+col*rim*.5+vec3(1.,.92,.95)*spec*.85;",
+      "  gl_FragColor=vec4(body*a+col*.85*glow*(1.-a),a+glow*(1.-a));",
       "}"
     ].join("\n");
 
@@ -125,10 +135,15 @@
     const uB = gl.getUniformLocation(prog, "u_b");
     const uN = gl.getUniformLocation(prog, "u_n");
     const uH = gl.getUniformLocation(prog, "u_h");
+    const uC = gl.getUniformLocation(prog, "u_c");
+    const uS = gl.getUniformLocation(prog, "u_s");
 
     let w = 0, h = 0, dpr = 1, top = 0;
     let blobs = [];
     const data = new Float32Array(MAX * 3);
+    const colors = new Float32Array(MAX * 3);
+    // Orange, red and the site's hot pink
+    const PALETTE = [[1, 0.5, 0.1], [0.95, 0.14, 0.08], [1, 0.18, 0.46]];
     const pointer = { x: -9999, y: -9999, vx: 0, vy: 0, inside: false };
     let dragged = null;
 
@@ -143,7 +158,8 @@
         blobs.push({
           x: desktop ? w * (0.55 + Math.random() * 0.4) : w * (0.5 + Math.random() * 0.45),
           y: top + r + Math.random() * Math.max(h - top - 2 * r, 1),
-          vx: 0, vy: 0, r: r,
+          vx: 0, vy: 0, r: r, rd: r,
+          color: PALETTE[i % PALETTE.length],
           phase: Math.random() * Math.PI * 2,
           speed: 0.00015 + Math.random() * 0.0002
         });
@@ -171,9 +187,9 @@
           b.vx = (pointer.x - b.x) * 0.25;
           b.vy = (pointer.y - b.y) * 0.25;
         } else {
-          // Slow lava-lamp rise and fall plus a little sideways sway
-          const ty = Math.sin(t * b.speed + b.phase) * 0.35;
-          const tx = Math.cos(t * b.speed * 0.7 + b.phase * 1.3) * 0.18;
+          // Lava-lamp cycle: rise, stall, sink, with a little sideways drift
+          const ty = Math.sin(t * b.speed + b.phase) * 0.6;
+          const tx = Math.cos(t * b.speed * 0.7 + b.phase * 1.3) * 0.12;
           b.vx += (tx - b.vx) * 0.01 * k;
           b.vy += (ty - b.vy) * 0.01 * k;
           // Cursor pushes nearby blobs away
@@ -191,6 +207,8 @@
           b.vx *= Math.pow(0.97, k);
           b.vy *= Math.pow(0.97, k);
         }
+        // Blobs swell and shrink slightly as they move
+        b.rd = b.r * (1 + 0.07 * Math.sin(t * b.speed * 3 + b.phase));
         b.x += b.vx * k;
         b.y += b.vy * k;
         // Soft walls (the top one sits below the fixed nav)
@@ -206,9 +224,12 @@
       for (let i = 0; i < blobs.length; i++) {
         data[i * 3] = blobs[i].x * dpr;
         data[i * 3 + 1] = blobs[i].y * dpr;
-        data[i * 3 + 2] = blobs[i].r * dpr;
+        data[i * 3 + 2] = blobs[i].rd * dpr;
+        colors.set(blobs[i].color, i * 3);
       }
       gl.uniform3fv(uB, data);
+      gl.uniform3fv(uC, colors);
+      gl.uniform1f(uS, blobs.reduce(function (m, b) { return m + b.r; }, 0) / Math.max(blobs.length, 1) * dpr);
       gl.uniform1i(uN, blobs.length);
       gl.uniform1f(uH, canvas.height);
       gl.clearColor(0, 0, 0, 0);

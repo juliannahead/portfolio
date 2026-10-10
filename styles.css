@@ -23,7 +23,6 @@
   /* Type */
   --font-display: "Space Grotesk", system-ui, sans-serif;
   --font-body: "Inter", system-ui, -apple-system, sans-serif;
-  --font-y2k: Verdana, Tahoma, Geneva, sans-serif; /* MySpace-era profile details */
 
 
   /* Layout */
@@ -298,27 +297,6 @@ ul { list-style: none; }
   color: var(--grey);
 }
 .hero__lede strong { color: var(--ink); font-weight: 500; }
-
-/* MySpace-style profile details under the name */
-.hero__status {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px 22px;
-  margin-top: 18px;
-  font-family: var(--font-y2k);
-  font-size: 13px;
-  color: var(--grey);
-}
-.hero__status b { color: var(--ink); }
-.hero__status a { color: var(--accent); text-decoration: underline; text-underline-offset: 2px; }
-.hero__status a:hover { color: var(--ink); }
-.online-now { display: inline-flex; align-items: center; gap: 6px; color: var(--accent); font-weight: 700; }
-.online-now__dot {
-  width: 8px; height: 8px; border-radius: 50%;
-  background: #3ad65b;
-  animation: online-blink 1.6s steps(2, jump-none) infinite;
-}
-@keyframes online-blink { 50% { opacity: 0.25; } }
 
 
 .hero__actions {
@@ -872,40 +850,6 @@ ul { list-style: none; }
   font-size: 13px; color: var(--grey-dim);
   letter-spacing: 0.02em;
 }
-
-/* MySpace profile labels and boxes ("About me:", "Contacting Julianna") */
-.ms-label {
-  font-family: var(--font-y2k);
-  font-size: 15px;
-  font-weight: 700;
-  color: var(--accent);
-  margin-bottom: 12px;
-}
-.ms-box {
-  max-width: 620px;
-  margin-top: 44px;
-  border: 1px solid var(--accent);
-  box-shadow: 0 0 32px -12px var(--accent-glow);
-}
-.ms-box__head {
-  background: var(--accent);
-  color: #000000;
-  font-family: var(--font-y2k);
-  font-size: 13px;
-  font-weight: 700;
-  padding: 7px 14px;
-}
-.ms-box .contact__form { margin-top: 0; padding: 24px 20px 4px; }
-.ms-box .field input,
-.ms-box .field textarea { border-radius: 2px; }
-.ms-box .contact__socials {
-  margin-top: 0;
-  padding: 14px 20px 18px;
-  border-top: 1px solid var(--line);
-  font-family: var(--font-y2k);
-}
-.ms-box .contact__socials a { font-size: 13px; font-weight: 700; color: var(--ink); text-decoration-color: var(--accent); }
-.ms-box .contact__socials a:hover { color: var(--accent); }
 
 /* ============================================================
    Contact
