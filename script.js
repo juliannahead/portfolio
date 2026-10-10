@@ -67,6 +67,236 @@
     el.style.transitionDelay = i * 0.09 + "s";
   });
 
+  /* ---- Hero lava lamp (WebGL metaballs; push with the cursor, drag to move) ---- */
+  (function () {
+    const canvas = document.getElementById("heroBlobs");
+    const hero = canvas && canvas.closest(".hero");
+    if (!hero) return;
+    const gl = canvas.getContext("webgl", { premultipliedAlpha: true, antialias: false });
+    if (!gl) return;
+
+    const MAX = 8;
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const finePointer = window.matchMedia("(hover: hover) and (pointer: fine)");
+
+    const vert = "attribute vec2 p;void main(){gl_Position=vec4(p,0.,1.);}";
+    const frag = [
+      "precision highp float;",
+      "uniform vec3 u_b[" + MAX + "];",
+      "uniform int u_n;",
+      "uniform float u_h;",
+      "void main(){",
+      "  vec2 c=vec2(gl_FragCoord.x,u_h-gl_FragCoord.y);",
+      "  float f=0.;",
+      "  for(int i=0;i<" + MAX + ";i++){",
+      "    if(i>=u_n)break;",
+      "    vec2 d=c-u_b[i].xy;",
+      "    f+=u_b[i].z*u_b[i].z/dot(d,d);",
+      "  }",
+      "  float a=smoothstep(.96,1.04,f);",
+      "  float g=pow(smoothstep(.2,1.,f),2.)*.55;",                       // soft glow around the goo
+      "  float y=clamp(c.y/u_h,0.,1.);",
+      "  vec3 col=mix(vec3(1.,.55,.12),vec3(.95,.16,.05),y);",            // orange on top, red below
+      "  col=mix(col,vec3(1.,.82,.45),smoothstep(1.2,4.,f)*.3);",         // hotter core
+      "  vec3 glow=mix(vec3(1.,.35,.05),vec3(.9,.1,.03),y);",
+      "  float al=a+g*(1.-a);",
+      "  gl_FragColor=vec4(col*a+glow*g*(1.-a),al);",
+      "}"
+    ].join("\n");
+
+    function compile(type, src) {
+      const s = gl.createShader(type);
+      gl.shaderSource(s, src);
+      gl.compileShader(s);
+      return s;
+    }
+    const prog = gl.createProgram();
+    gl.attachShader(prog, compile(gl.VERTEX_SHADER, vert));
+    gl.attachShader(prog, compile(gl.FRAGMENT_SHADER, frag));
+    gl.linkProgram(prog);
+    if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) return;
+    gl.useProgram(prog);
+
+    gl.bindBuffer(gl.ARRAY_BUFFER, gl.createBuffer());
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 3, -1, -1, 3]), gl.STATIC_DRAW);
+    const loc = gl.getAttribLocation(prog, "p");
+    gl.enableVertexAttribArray(loc);
+    gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
+    const uB = gl.getUniformLocation(prog, "u_b");
+    const uN = gl.getUniformLocation(prog, "u_n");
+    const uH = gl.getUniformLocation(prog, "u_h");
+
+    let w = 0, h = 0, dpr = 1, top = 0;
+    let blobs = [];
+    const data = new Float32Array(MAX * 3);
+    const pointer = { x: -9999, y: -9999, vx: 0, vy: 0, inside: false };
+    let dragged = null;
+
+    // Blobs live mostly in the empty right side on desktop, behind the copy on mobile
+    function seed() {
+      const desktop = w > 860;
+      const n = desktop ? 7 : 4;
+      const unit = Math.min(w, h) * (desktop ? 0.075 : 0.1);
+      blobs = [];
+      for (let i = 0; i < n; i++) {
+        const r = unit * (0.7 + Math.random() * 0.8);
+        blobs.push({
+          x: desktop ? w * (0.55 + Math.random() * 0.4) : w * (0.5 + Math.random() * 0.45),
+          y: top + r + Math.random() * Math.max(h - top - 2 * r, 1),
+          vx: 0, vy: 0, r: r, rd: r,
+          phase: Math.random() * Math.PI * 2,
+          speed: 0.00015 + Math.random() * 0.0002
+        });
+      }
+    }
+
+    function resize() {
+      const rect = hero.getBoundingClientRect();
+      dpr = Math.min(window.devicePixelRatio || 1, 1.5);
+      const first = !w;
+      const sx = first ? 1 : rect.width / w, sy = first ? 1 : rect.height / h;
+      w = rect.width; h = rect.height;
+      top = (parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--nav-h")) || 64) + 16;
+      canvas.width = Math.round(w * dpr);
+      canvas.height = Math.round(h * dpr);
+      gl.viewport(0, 0, canvas.width, canvas.height);
+      if (first) seed();
+      else blobs.forEach(function (b) { b.x *= sx; b.y *= sy; });
+    }
+
+    function step(t, dt) {
+      const k = dt / 16.67;
+      blobs.forEach(function (b) {
+        if (b === dragged) {
+          b.vx = (pointer.x - b.x) * 0.25;
+          b.vy = (pointer.y - b.y) * 0.25;
+        } else {
+          // Lava-lamp cycle: rise, stall, sink, with a little sideways drift
+          const ty = Math.sin(t * b.speed + b.phase) * 0.6;
+          const tx = Math.cos(t * b.speed * 0.7 + b.phase * 1.3) * 0.12;
+          b.vx += (tx - b.vx) * 0.01 * k;
+          b.vy += (ty - b.vy) * 0.01 * k;
+          // Cursor pushes nearby blobs away
+          if (pointer.inside && !dragged) {
+            const dx = b.x - pointer.x, dy = b.y - pointer.y;
+            const reach = b.r * 2.2;
+            const d2 = dx * dx + dy * dy;
+            if (d2 < reach * reach && d2 > 1) {
+              const d = Math.sqrt(d2);
+              const f = (1 - d / reach) * 0.9 * k;
+              b.vx += (dx / d) * f;
+              b.vy += (dy / d) * f;
+            }
+          }
+          b.vx *= Math.pow(0.97, k);
+          b.vy *= Math.pow(0.97, k);
+        }
+        // Blobs swell and shrink slightly as they move
+        b.rd = b.r * (1 + 0.07 * Math.sin(t * b.speed * 3 + b.phase));
+        b.x += b.vx * k;
+        b.y += b.vy * k;
+        // Soft walls (the top one sits below the fixed nav)
+        const m = b.r * 0.6;
+        if (b.x < m) b.vx += (m - b.x) * 0.02 * k;
+        if (b.x > w - m) b.vx -= (b.x - (w - m)) * 0.02 * k;
+        if (b.y < top + b.r) b.vy += (top + b.r - b.y) * 0.02 * k;
+        if (b.y > h - m) b.vy -= (b.y - (h - m)) * 0.02 * k;
+      });
+    }
+
+    function draw() {
+      for (let i = 0; i < blobs.length; i++) {
+        data[i * 3] = blobs[i].x * dpr;
+        data[i * 3 + 1] = blobs[i].y * dpr;
+        data[i * 3 + 2] = blobs[i].rd * dpr;
+      }
+      gl.uniform3fv(uB, data);
+      gl.uniform1i(uN, blobs.length);
+      gl.uniform1f(uH, canvas.height);
+      gl.clearColor(0, 0, 0, 0);
+      gl.clear(gl.COLOR_BUFFER_BIT);
+      gl.drawArrays(gl.TRIANGLES, 0, 3);
+    }
+
+    // Is the point inside the goo? Same field the shader uses.
+    function blobAt(x, y) {
+      let f = 0, best = null, bestD = Infinity;
+      blobs.forEach(function (b) {
+        const d2 = (x - b.x) * (x - b.x) + (y - b.y) * (y - b.y);
+        f += (b.r * b.r) / d2;
+        if (d2 < bestD) { bestD = d2; best = b; }
+      });
+      return f >= 1 ? best : null;
+    }
+
+    let visible = true, raf = 0, last = 0;
+    function loop(t) {
+      raf = 0;
+      if (!visible) return;
+      step(t, Math.min(t - (last || t), 50));
+      last = t;
+      draw();
+      raf = requestAnimationFrame(loop);
+    }
+    function start() {
+      if (reduceMotion.matches) { draw(); return; }
+      if (!raf) { last = 0; raf = requestAnimationFrame(loop); }
+    }
+
+    function local(e) {
+      const rect = hero.getBoundingClientRect();
+      return { x: e.clientX - rect.left, y: e.clientY - rect.top };
+    }
+    function interactive(e) {
+      return finePointer.matches && !reduceMotion.matches && e.pointerType === "mouse";
+    }
+
+    hero.addEventListener("pointermove", function (e) {
+      if (!interactive(e)) return;
+      const p = local(e);
+      pointer.x = p.x; pointer.y = p.y; pointer.inside = true;
+      if (!dragged) hero.classList.toggle("is-grab", !!blobAt(p.x, p.y) && !e.target.closest("a, button"));
+    });
+    hero.addEventListener("pointerleave", function () {
+      pointer.inside = false;
+      hero.classList.remove("is-grab");
+    });
+    hero.addEventListener("pointerdown", function (e) {
+      if (!interactive(e) || e.button !== 0 || e.target.closest("a, button")) return;
+      const p = local(e);
+      const b = blobAt(p.x, p.y);
+      if (!b) return;
+      e.preventDefault();
+      dragged = b;
+      pointer.x = p.x; pointer.y = p.y;
+      hero.setPointerCapture(e.pointerId);
+      hero.classList.add("is-dragging");
+    });
+    function release() {
+      dragged = null;
+      hero.classList.remove("is-dragging");
+    }
+    hero.addEventListener("pointerup", release);
+    hero.addEventListener("pointercancel", release);
+
+    new IntersectionObserver(function (entries) {
+      visible = entries[0].isIntersecting;
+      if (visible) start();
+    }).observe(hero);
+
+    let resizeTimer;
+    window.addEventListener("resize", function () {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(function () { resize(); draw(); }, 100);
+    });
+    reduceMotion.addEventListener("change", start);
+
+    resize();
+    draw();
+    canvas.classList.add("is-ready");
+    start();
+  })();
+
   /* ---- Work slider — scroll-pinned on desktop, swipe on mobile ---- */
   const workSection = document.getElementById("work");
   const workPinWrap = document.getElementById("workPinWrap");

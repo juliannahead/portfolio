@@ -1,26 +1,29 @@
 /* ============================================================
    Julianna Head Portfolio
-   Clean, light, minimal
+   Dark, minimal, a little emo Y2K
    ============================================================ */
 
 :root {
-  /* Palette — clean light / Apple-style */
-  --black: #ffffff;         /* page background (light) */
-  --ink: #1d1d1f;           /* primary text */
-  --ink-2: #f5f5f7;
-  --surface: #fbfbfd;
-  --line: rgba(0, 0, 0, 0.10);
-  --line-strong: rgba(0, 0, 0, 0.18);
-  --white: #1d1d1f;         /* primary text alias used across components */
-  --grey: #6e6e73;
-  --grey-dim: #86868b;
-  --bg-2: #f5f5f7;          /* light grey section background */
-  --accent: #2b6fff;        /* the one accent: links, focus, active states */
-  --shadow: 0 1px 2px rgba(29, 29, 31, 0.04), 0 12px 32px -18px rgba(29, 29, 31, 0.18);
+  /* Palette — dark, black with a hot pink accent */
+  --black: #000000;         /* page background */
+  --ink: #ededed;           /* primary text */
+  --ink-2: #111113;
+  --surface: #0a0a0b;
+  --card: #0c0c0e;          /* cards, inputs, panels */
+  --line: rgba(255, 255, 255, 0.12);
+  --line-strong: rgba(255, 255, 255, 0.24);
+  --white: #ededed;         /* primary text alias used across components */
+  --grey: #9a9aa0;
+  --grey-dim: #6e6e74;
+  --bg-2: #0a0a0b;
+  --accent: #ff2d75;        /* hot pink: links, focus, active states */
+  --accent-glow: rgba(255, 45, 117, 0.35);
+  --shadow: 0 0 0 1px rgba(255, 45, 117, 0.25), 0 14px 40px -18px rgba(255, 45, 117, 0.45);
 
   /* Type */
   --font-display: "Space Grotesk", system-ui, sans-serif;
   --font-body: "Inter", system-ui, -apple-system, sans-serif;
+
 
   /* Layout */
   --maxw: 1200px;
@@ -58,6 +61,8 @@ body.menu-open { overflow: hidden; }
 }
 
 a { color: inherit; text-decoration: none; }
+
+::selection { background: var(--accent); color: #000000; }
 ul { list-style: none; }
 
 .container {
@@ -103,7 +108,7 @@ ul { list-style: none; }
   transition: background 0.4s var(--ease);
 }
 .nav.is-scrolled {
-  background: rgba(255, 255, 255, 0.72);
+  background: rgba(0, 0, 0, 0.72);
   backdrop-filter: saturate(180%) blur(20px);
   -webkit-backdrop-filter: saturate(180%) blur(20px);
 }
@@ -170,7 +175,7 @@ ul { list-style: none; }
   top: var(--nav-h);
   left: 0;
   right: 0;
-  background: rgba(255, 255, 255, 0.96);
+  background: rgba(0, 0, 0, 0.96);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   display: flex;
@@ -221,9 +226,31 @@ ul { list-style: none; }
    Hero
    ============================================================ */
 .hero {
+  position: relative;
+  overflow: hidden;
   padding: calc(var(--nav-h) + clamp(56px, 10vh, 96px)) 0 clamp(72px, 12vh, 128px);
+  background: #000;
   border-bottom: 1px solid var(--line);
 }
+
+/* Lava lamp blobs: WebGL canvas behind the hero copy (see script.js) */
+.hero__blobs {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  opacity: 0;
+  transition: opacity 1.2s var(--ease);
+}
+.hero__blobs.is-ready { opacity: 1; }
+@media (max-width: 860px) {
+  .hero__blobs.is-ready { opacity: 0.45; } /* sits behind the copy on small screens */
+}
+.hero.is-grab { cursor: grab; user-select: none; }
+.hero.is-dragging { cursor: grabbing; user-select: none; }
+
+.hero__inner { position: relative; }
 
 .hero__inner {
   display: flex;
@@ -248,6 +275,7 @@ ul { list-style: none; }
   margin: 0;
   color: var(--ink);
   text-transform: uppercase;
+  text-shadow: 0 0 24px var(--accent-glow);
 }
 
 .hero__lede {
@@ -261,6 +289,7 @@ ul { list-style: none; }
   color: var(--grey);
 }
 .hero__lede strong { color: var(--ink); font-weight: 500; }
+
 
 .hero__actions {
   display: flex;
@@ -282,7 +311,7 @@ ul { list-style: none; }
   display: inline-block;
 }
 .btn--primary { background: var(--white); color: var(--black); }
-.btn--primary:hover { transform: translateY(-1px); background: var(--accent); color: #ffffff; }
+.btn--primary:hover { transform: translateY(-1px); background: var(--accent); color: #000000; }
 .btn:active { transform: translateY(0) scale(0.98); }
 .btn--ghost { border-color: var(--line-strong); color: var(--white); }
 .btn--ghost:hover { transform: translateY(-1px); border-color: var(--white); }
@@ -398,7 +427,7 @@ ul { list-style: none; }
   height: 44px;
   border-radius: 999px;
   border: 1px solid var(--line-strong);
-  background: #ffffff;
+  background: var(--card);
   color: var(--ink);
   font-size: 1.1rem;
   cursor: pointer;
@@ -410,7 +439,7 @@ ul { list-style: none; }
   transform: translateY(-2px);
   border-color: var(--ink);
   background: var(--ink);
-  color: #ffffff;
+  color: var(--black);
 }
 .work__btn:disabled {
   opacity: 0.35;
@@ -450,7 +479,7 @@ ul { list-style: none; }
   cursor: grabbing;
 }
 .work__viewport:focus-visible {
-  box-shadow: inset 0 0 0 2px rgba(43, 111, 255, 0.5);
+  box-shadow: inset 0 0 0 2px rgba(255, 45, 117, 0.6);
   border-radius: var(--radius);
 }
 
@@ -491,7 +520,7 @@ ul { list-style: none; }
   flex: 0 0 min(520px, calc(100cqw - 16px));
   max-width: min(520px, calc(100cqw - 16px));
   box-sizing: border-box;
-  background: #ffffff;
+  background: var(--card);
   border: 1px solid var(--line);
   border-radius: var(--radius);
   padding: clamp(28px, 4vw, 40px);
@@ -575,13 +604,13 @@ ul { list-style: none; }
   overflow: hidden;
 }
 .pillar {
-  background: #ffffff;
+  background: var(--card);
   padding: clamp(28px, 3vw, 40px);
   transition: background 0.4s var(--ease), box-shadow 0.4s var(--ease), transform 0.4s var(--ease);
   position: relative;
 }
 .pillar:hover {
-  background: #ffffff;
+  background: var(--card);
   box-shadow: var(--shadow);
   transform: translateY(-2px);
 }
@@ -673,7 +702,7 @@ ul { list-style: none; }
   margin: -24px 0 0 -24px;
   border-radius: 50%;
   border: 1px solid var(--line-strong);
-  background: #ffffff;
+  background: var(--card);
   color: var(--ink);
   font-size: 12px;
   font-variant-numeric: tabular-nums;
@@ -696,7 +725,7 @@ ul { list-style: none; }
 .constellation__node.is-active {
   border-color: var(--ink);
   background: var(--ink);
-  color: #ffffff;
+  color: var(--black);
   box-shadow: var(--shadow);
 }
 .constellation__node-label {
@@ -726,7 +755,7 @@ ul { list-style: none; }
   transform: translateX(-50%);
   z-index: 10;
   width: min(320px, calc(100% - 32px));
-  background: #ffffff;
+  background: var(--card);
   border: 1px solid var(--line-strong);
   border-radius: var(--radius);
   padding: clamp(20px, 3vw, 28px);
@@ -867,7 +896,7 @@ ul { list-style: none; }
   font-family: var(--font-body);
   font-size: 1rem;
   color: var(--ink);
-  background: #ffffff;
+  background: var(--card);
   border: 1px solid var(--line-strong);
   border-radius: 12px;
   padding: 14px 16px;
@@ -881,7 +910,7 @@ ul { list-style: none; }
 .field textarea:focus {
   outline: none;
   border-color: var(--accent);
-  box-shadow: 0 0 0 4px rgba(43, 111, 255, 0.12);
+  box-shadow: 0 0 0 4px rgba(255, 45, 117, 0.18);
 }
 .contact__submit { margin-top: 6px; }
 .contact__submit:disabled { opacity: 0.6; cursor: default; }
