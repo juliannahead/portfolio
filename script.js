@@ -80,25 +80,34 @@
     const finePointer = window.matchMedia("(hover: hover) and (pointer: fine)");
 
     const vert = "attribute vec2 p;void main(){gl_Position=vec4(p,0.,1.);}";
+    // Each blob's radius wobbles with angle and time so the goo never reads as circles.
+    // Shading uses 1 - 1/f, which is 0 at the edge and rises smoothly to 1 inside,
+    // so the warm middle fades into the darker edge without hot spots.
     const frag = [
       "precision highp float;",
-      "uniform vec3 u_b[" + MAX + "];",
+      "uniform vec4 u_b[" + MAX + "];",                                     // x, y, radius, seed
       "uniform int u_n;",
       "uniform float u_h;",
+      "uniform float u_t;",
       "void main(){",
       "  vec2 c=vec2(gl_FragCoord.x,u_h-gl_FragCoord.y);",
       "  float f=0.;",
       "  for(int i=0;i<" + MAX + ";i++){",
       "    if(i>=u_n)break;",
       "    vec2 d=c-u_b[i].xy;",
-      "    f+=u_b[i].z*u_b[i].z/dot(d,d);",
+      "    float s=u_b[i].w,an=atan(d.y,d.x);",
+      "    float wb=1.+.17*sin(2.*an+s+u_t*.35)+.09*sin(3.*an-s*1.7+u_t*.5);",
+      "    float r=u_b[i].z*wb;",
+      "    f+=r*r/(dot(d,d)+1.);",
       "  }",
-      "  float a=smoothstep(.96,1.04,f);",
-      "  float g=pow(smoothstep(.2,1.,f),2.)*.55;",                       // soft glow around the goo
+      "  float a=smoothstep(.86,1.08,f);",                                     // soft rim
+      "  float g=pow(smoothstep(.15,1.,f),2.2)*.5;",                       // glow around the goo
+      "  float k=smoothstep(0.,1.,1.-1./max(f,1.));",                       // 0 at the edge, 1 deep inside
       "  float y=clamp(c.y/u_h,0.,1.);",
-      "  vec3 col=mix(vec3(1.,.55,.12),vec3(.95,.16,.05),y);",            // orange on top, red below
-      "  col=mix(col,vec3(1.,.82,.45),smoothstep(1.2,4.,f)*.3);",         // hotter core
-      "  vec3 glow=mix(vec3(1.,.35,.05),vec3(.9,.1,.03),y);",
+      "  vec3 edge=mix(vec3(.96,.36,.07),vec3(.9,.2,.05),y);",              // deeper red-orange at the edge
+      "  vec3 core=mix(vec3(1.,.66,.3),vec3(1.,.48,.18),y);",               // warm glowing middle
+      "  vec3 col=mix(edge,core,k);",
+      "  vec3 glow=edge;",                                                  // glow continues the edge color
       "  float al=a+g*(1.-a);",
       "  gl_FragColor=vec4(col*a+glow*g*(1.-a),al);",
       "}"
@@ -125,10 +134,11 @@
     const uB = gl.getUniformLocation(prog, "u_b");
     const uN = gl.getUniformLocation(prog, "u_n");
     const uH = gl.getUniformLocation(prog, "u_h");
+    const uT = gl.getUniformLocation(prog, "u_t");
 
     let w = 0, h = 0, dpr = 1, top = 0;
     let blobs = [];
-    const data = new Float32Array(MAX * 3);
+    const data = new Float32Array(MAX * 4);
     const pointer = { x: -9999, y: -9999, vx: 0, vy: 0, inside: false };
     let dragged = null;
 
@@ -206,11 +216,13 @@
 
     function draw() {
       for (let i = 0; i < blobs.length; i++) {
-        data[i * 3] = blobs[i].x * dpr;
-        data[i * 3 + 1] = blobs[i].y * dpr;
-        data[i * 3 + 2] = blobs[i].rd * dpr;
+        data[i * 4] = blobs[i].x * dpr;
+        data[i * 4 + 1] = blobs[i].y * dpr;
+        data[i * 4 + 2] = blobs[i].rd * dpr;
+        data[i * 4 + 3] = blobs[i].phase;
       }
-      gl.uniform3fv(uB, data);
+      gl.uniform4fv(uB, data);
+      gl.uniform1f(uT, last / 1000);
       gl.uniform1i(uN, blobs.length);
       gl.uniform1f(uH, canvas.height);
       gl.clearColor(0, 0, 0, 0);
