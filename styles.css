@@ -230,18 +230,10 @@ ul { list-style: none; }
   overflow: hidden;
   padding: calc(var(--nav-h) + clamp(56px, 10vh, 96px)) 0 clamp(72px, 12vh, 128px);
   background: #000;
+  border-bottom: 1px solid var(--line);
 }
 
 /* Lava lamp blobs: WebGL canvas behind the hero copy (see script.js) */
-/* Black-and-white checker strip along the bottom of the hero */
-.hero::after {
-  content: "";
-  position: absolute;
-  left: 0; right: 0; bottom: 0;
-  height: 12px;
-  background: repeating-conic-gradient(#ededed 0 25%, #000 0 50%) 0 0 / 12px 12px;
-}
-
 .hero__blobs {
   position: absolute;
   inset: 0;
