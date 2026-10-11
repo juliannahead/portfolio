@@ -4,7 +4,7 @@
    ============================================================ */
 
 :root {
-  /* Palette — dark, black with a hot pink accent */
+  /* Palette — dark, black with a bright orange accent (light sections override below) */
   --black: #000000;         /* page background */
   --ink: #ededed;           /* primary text */
   --ink-2: #111113;
@@ -16,9 +16,9 @@
   --grey: #9a9aa0;
   --grey-dim: #6e6e74;
   --bg-2: #0a0a0b;
-  --accent: #ff2d75;        /* hot pink: links, focus, active states */
-  --accent-glow: rgba(255, 45, 117, 0.35);
-  --shadow: 0 0 0 1px rgba(255, 45, 117, 0.25), 0 14px 40px -18px rgba(255, 45, 117, 0.45);
+  --accent: #ff7a1a;        /* bright orange like the lava: links, focus, highlights */
+  --accent-glow: rgba(255, 122, 26, 0.35);
+  --shadow: 0 0 0 1px rgba(255, 122, 26, 0.25), 0 14px 40px -18px rgba(255, 122, 26, 0.45);
 
   /* Type */
   --font-display: "Space Grotesk", system-ui, sans-serif;
@@ -33,6 +33,24 @@
 
   /* Motion */
   --ease: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* White sections with black text, alternating with the black ones */
+.theme-light {
+  --black: #ffffff;
+  --ink: #1d1d1f;
+  --white: #1d1d1f;
+  --ink-2: #f5f5f7;
+  --surface: #fbfbfd;
+  --card: #ffffff;
+  --line: rgba(0, 0, 0, 0.10);
+  --line-strong: rgba(0, 0, 0, 0.18);
+  --grey: #6e6e73;
+  --grey-dim: #86868b;
+  --bg-2: #f5f5f7;
+  --shadow: 0 1px 2px rgba(29, 29, 31, 0.04), 0 12px 32px -18px rgba(29, 29, 31, 0.18);
+  background: var(--black);
+  color: var(--ink);
 }
 
 /* Reset */
@@ -284,9 +302,17 @@ ul { list-style: none; }
   font-size: clamp(1.35rem, 2.6vw, 2rem);
   line-height: 1.25;
   letter-spacing: -0.02em;
-  max-width: 26ch;
+  max-width: 30ch;
   margin-top: clamp(24px, 4vh, 40px);
   color: var(--grey);
+  /* Dark frosted glass: the blobs blur through when they drift behind it */
+  padding: clamp(22px, 3vw, 32px);
+  background: rgba(18, 18, 20, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 14px;
+  -webkit-backdrop-filter: blur(22px) saturate(140%);
+  backdrop-filter: blur(22px) saturate(140%);
+  box-shadow: 0 24px 60px -30px rgba(0, 0, 0, 0.8);
 }
 .hero__lede strong { color: var(--ink); font-weight: 500; }
 
@@ -479,7 +505,7 @@ ul { list-style: none; }
   cursor: grabbing;
 }
 .work__viewport:focus-visible {
-  box-shadow: inset 0 0 0 2px rgba(255, 45, 117, 0.6);
+  box-shadow: inset 0 0 0 2px rgba(255, 122, 26, 0.6);
   border-radius: var(--radius);
 }
 
@@ -910,7 +936,7 @@ ul { list-style: none; }
 .field textarea:focus {
   outline: none;
   border-color: var(--accent);
-  box-shadow: 0 0 0 4px rgba(255, 45, 117, 0.18);
+  box-shadow: 0 0 0 4px rgba(255, 122, 26, 0.2);
 }
 .contact__submit { margin-top: 6px; }
 .contact__submit:disabled { opacity: 0.6; cursor: default; }
