@@ -174,7 +174,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
 
-  <link rel="stylesheet" href="styles.css?v=53" />
+  <link rel="stylesheet" href="styles.css?v=54" />
 </head>
 <body>
   <!-- Navigation -->
@@ -182,8 +182,9 @@
     <div class="nav__inner">
       <span class="nav__logo-mark">Welcome to my digital portfolio!</span>
       <nav class="nav__links" aria-label="Primary">
-        <a href="#capabilities">What I do</a>
         <a href="#about">Who I am</a>
+        <a href="#capabilities">What I do</a>
+        <a href="#work">Work</a>
         <a href="#contact" class="nav__cta">Contact</a>
       </nav>
       <button class="nav__toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false">
@@ -191,8 +192,9 @@
       </button>
     </div>
     <nav class="mobile-menu" id="mobileMenu" aria-label="Mobile">
-      <a href="#capabilities">What I do</a>
       <a href="#about">Who I am</a>
+      <a href="#capabilities">What I do</a>
+      <a href="#work">Work</a>
       <a href="#contact" class="mobile-menu__cta">Contact</a>
     </nav>
   </header>
@@ -214,25 +216,86 @@
       </div>
     </section>
 
+    <!-- Who I am -->
+    <section class="about theme-light" id="about">
+      <div class="container about__grid">
+        <div class="about__left reveal">
+          <h2 class="section-title">Who I am.</h2>
+        </div>
+        <div class="about__right reveal">
+          <p>
+            I'm Julianna Head. I design and build the systems a business runs on: websites,
+            internal apps, CRMs, and the funnels and ads that bring in customers.
+          </p>
+          <p>
+            I find where a team loses time or revenue, then design the fix, build it, and
+            measure what it changed. I handle the design, the build, and the marketing, so
+            nothing gets lost in a handoff.
+          </p>
+          <div class="about__stats">
+            <div class="stat">
+              <span class="stat__num mono">90%</span>
+              <span class="stat__label">Less time on staff scheduling</span>
+            </div>
+            <div class="stat">
+              <span class="stat__num mono">40%+</span>
+              <span class="stat__label">Revenue growth driven</span>
+            </div>
+            <div class="stat">
+              <span class="stat__num mono">50%+</span>
+              <span class="stat__label">Conversion rate lift</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- What I do -->
+    <section class="capabilities" id="capabilities">
+      <div class="container">
+        <div class="section-head reveal">
+          <h2 class="section-title">What I do.</h2>
+        </div>
+
+        <div class="pillars pillars--simple">
+          <div class="pillar reveal">
+            <h3 class="pillar__title">Product &amp; Operations</h3>
+            <p class="pillar__text">I map how a team works and build the tools it runs on: internal apps, scheduling, CRM pipelines, and automations.</p>
+          </div>
+          <div class="pillar reveal">
+            <h3 class="pillar__title">Design &amp; Development</h3>
+            <p class="pillar__text">Websites, web apps, and app screens, from first sketch to launch.</p>
+          </div>
+          <div class="pillar reveal">
+            <h3 class="pillar__title">Marketing &amp; Growth</h3>
+            <p class="pillar__text">Funnels, landing pages, SEO, and Google and Meta ads, tracked to what each dollar brings back.</p>
+          </div>
+          <div class="pillar reveal">
+            <h3 class="pillar__title">Data &amp; Reporting</h3>
+            <p class="pillar__text">Dashboards and reports that show what's working and where money leaks out.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- Featured -->
     <section class="work theme-light" id="work">
       <div class="work__pin-wrap" id="workPinWrap">
         <div class="work__pin" id="workPin">
           <div class="container">
             <div class="section-head reveal">
-              <h2 class="section-title">Seven systems, built start to finish.</h2>
+              <h2 class="section-title">Six projects, built start to finish.</h2>
               <p class="section-lede">
-                A product of my own, plus client work for wellness, professional services,
-                consumer, and growth-stage businesses, from the tools a team uses every day to
-                the funnels that bring in revenue.
-              </p>
+                    A product of my own, plus client work, from the tools a team uses every day
+                    to the websites and funnels that bring in revenue.
+                  </p>
             </div>
 
             <div class="work__controls reveal" id="workAlign">
           <button type="button" class="work__btn" id="workPrev" aria-label="Previous project">
             <span aria-hidden="true">←</span>
           </button>
-          <span class="work__counter mono" id="workCounter"><span id="workCurrent">01</span> / 07</span>
+          <span class="work__counter mono" id="workCounter"><span id="workCurrent">01</span> / 06</span>
           <button type="button" class="work__btn" id="workNext" aria-label="Next project">
             <span aria-hidden="true">→</span>
           </button>
@@ -266,9 +329,9 @@
             <p class="case-card__client">Wellness &amp; Hospitality Client</p>
             <h3 class="case-card__title">Staff Portal &amp; Management Operations</h3>
             <p class="case-card__desc">
-              I designed and built internal web apps for a multi-location wellness brand.
-              Scheduling, staff operations, and management now happen in one place instead
-              of a patchwork of separate processes.
+              I designed and built a staff portal, staff scheduler, and client scheduler for a
+              multi-location wellness brand. Shift reports and schedules moved off paper into one
+              place, and schedule planning went from 100+ hours to under 10.
             </p>
             <ul class="case-card__tags">
               <li>Web App</li><li>Internal Tooling</li><li>UX/UI</li><li>Automation</li>
@@ -276,14 +339,20 @@
           </article>
 
           <article class="case-card">
-            <p class="case-card__client">Professional Services Client</p>
-            <h3 class="case-card__title">Client Scheduling System</h3>
+            <button type="button" class="case-card__media case-card__media--button" data-gallery="sitesGallery"
+              aria-label="Open the client website designs">
+              <img src="work/sites/cover.jpg" width="1440" height="900" loading="lazy" decoding="async"
+                alt="Live In Fitness homepage hero" />
+            </button>
+            <p class="case-card__client">Wellness &amp; Fitness Clients</p>
+            <h3 class="case-card__title">Client Websites</h3>
             <p class="case-card__desc">
-              A scheduling platform for a service business. Confirmations, reminders, and
-              handoffs now run on their own, which gives the team back hours of admin.
+              Websites for Live In Fitness, Fitness Retreat, and Fit Culture: quiz funnels,
+              lead forms with SMS consent, results carousels, and calls to book a strategy call.
             </p>
+            <button type="button" class="case-card__more" data-gallery="sitesGallery">See the designs &rarr;</button>
             <ul class="case-card__tags">
-              <li>Product Design</li><li>Automation</li><li>Full-Stack</li>
+              <li>Web Design</li><li>Funnels</li><li>Lead Capture</li><li>UX/UI</li>
             </ul>
           </article>
 
@@ -296,19 +365,6 @@
             </p>
             <ul class="case-card__tags">
               <li>CRM Architecture</li><li>GoHighLevel</li><li>Lifecycle Automation</li>
-            </ul>
-          </article>
-
-          <article class="case-card">
-            <p class="case-card__client">Multi-Location Operations Client</p>
-            <h3 class="case-card__title">VoIP &amp; IVR Phone System</h3>
-            <p class="case-card__desc">
-              A new VoIP phone system with IVR for a growing operations business. I mapped
-              the call flows and routing so they can take more calls without hiring more
-              people to answer them.
-            </p>
-            <ul class="case-card__tags">
-              <li>Telephony</li><li>IVR Design</li><li>Ops Infrastructure</li>
             </ul>
           </article>
 
@@ -350,164 +406,58 @@
       </div>
     </section>
 
-    <!-- Capabilities -->
-    <section class="capabilities" id="capabilities">
-      <div class="container">
-        <div class="section-head reveal">
-          <h2 class="section-title">I speak design, code, marketing, and data.</h2>
-          <p class="section-lede">
-            I like hard problems, and I like switching between kinds of work. Because I
-            handle design, engineering, marketing, and product myself, there are fewer
-            handoffs and the pieces fit together.
-          </p>
-        </div>
-
-        <div class="constellation reveal" id="skillsConstellation" aria-label="Interactive skills constellation">
-          <div class="constellation__stage" id="constellationStage">
-            <button type="button" class="constellation__backdrop" id="constellationBackdrop" aria-label="Close skill detail" tabindex="-1" hidden></button>
-            <div class="constellation__orbit-ring" aria-hidden="true"></div>
-            <div class="constellation__hub" aria-hidden="true">
-              <span class="constellation__hub-dot"></span>
-            </div>
-            <div class="constellation__nodes" id="constellationNodes"></div>
-            <aside class="constellation__detail" id="constellationDetail" aria-live="polite" hidden>
-              <span class="constellation__detail-num mono" id="constellationDetailNum"></span>
-              <h3 class="constellation__detail-title" id="constellationDetailTitle"></h3>
-              <ul class="constellation__detail-list" id="constellationDetailList"></ul>
-            </aside>
-          </div>
-          <p class="constellation__hint" id="constellationHint">Click a node to explore</p>
-        </div>
-
-        <div class="pillars pillars--fallback">
-          <div class="pillar reveal">
-            <span class="pillar__num mono">01</span>
-            <h3 class="pillar__title">Design &amp; Brand</h3>
-            <ul class="pillar__list">
-              <li>Graphic Designer</li>
-              <li>Web Designer</li>
-              <li>App UI Designer</li>
-              <li>Brand &amp; Visual Systems</li>
-            </ul>
-          </div>
-
-          <div class="pillar reveal">
-            <span class="pillar__num mono">02</span>
-            <h3 class="pillar__title">Engineering &amp; Development</h3>
-            <ul class="pillar__list">
-              <li>Web Developer</li>
-              <li>Engineer</li>
-              <li>Software Consultant</li>
-              <li>Web App Development</li>
-            </ul>
-          </div>
-
-          <div class="pillar reveal">
-            <span class="pillar__num mono">03</span>
-            <h3 class="pillar__title">Marketing &amp; Growth</h3>
-            <ul class="pillar__list">
-              <li>Digital Marketing Specialist</li>
-              <li>SEO Specialist</li>
-              <li>Social Media Manager</li>
-              <li>Google &amp; Meta Ads</li>
-              <li>Lead Generation</li>
-            </ul>
-          </div>
-
-          <div class="pillar reveal">
-            <span class="pillar__num mono">04</span>
-            <h3 class="pillar__title">Data &amp; Analytics</h3>
-            <ul class="pillar__list">
-              <li>Data Analyst</li>
-              <li>Marketing Analyst</li>
-              <li>Ads &amp; Performance Analytics</li>
-            </ul>
-          </div>
-
-          <div class="pillar reveal">
-            <span class="pillar__num mono">05</span>
-            <h3 class="pillar__title">Product &amp; Strategy</h3>
-            <ul class="pillar__list">
-              <li>Digital Product Manager</li>
-              <li>Consultant</li>
-              <li>Digital Operations</li>
-              <li>CRM &amp; Systems Architecture</li>
-            </ul>
-          </div>
-
-          <div class="pillar reveal">
-            <span class="pillar__num mono">06</span>
-            <h3 class="pillar__title">Content &amp; Media</h3>
-            <ul class="pillar__list">
-              <li>Content Creator</li>
-              <li>Video Editor</li>
-              <li>Videographer</li>
-              <li>Photographer</li>
-            </ul>
-          </div>
-
-          <div class="pillar reveal">
-            <span class="pillar__num mono">07</span>
-            <h3 class="pillar__title">Operations &amp; People</h3>
-            <ul class="pillar__list">
-              <li>Hiring Manager</li>
-              <li>Recruiter</li>
-              <li>Marketing Specialist</li>
-            </ul>
-          </div>
-
-          <div class="pillar reveal">
-            <span class="pillar__num mono">08</span>
-            <h3 class="pillar__title">Editorial</h3>
-            <ul class="pillar__list">
-              <li>Grant &amp; Book Editor</li>
-            </ul>
-          </div>
-        </div>
+    <dialog class="gallery" id="sitesGallery" aria-labelledby="sitesGalleryTitle">
+      <div class="gallery__head">
+        <h2 class="gallery__title" id="sitesGalleryTitle">Client websites</h2>
+        <button type="button" class="gallery__close" data-gallery-close aria-label="Close">&times;</button>
       </div>
-    </section>
-
-    <!-- About -->
-    <section class="about theme-light" id="about">
-      <div class="container about__grid">
-        <div class="about__left reveal">
-          <p class="eyebrow about__eyebrow">You've got the stars.</p>
-          <h2 class="section-title">I draw the constellation.</h2>
-        </div>
-        <div class="about__right reveal">
-          <p>
-            I'm Julianna Head, a Digital Operations &amp; Growth Architect. I work across
-            design, engineering, marketing, product, and data, and I'm usually the one who
-            sees how they connect.
-          </p>
-          <p>
-            My clients include wellness and hospitality companies, professional services
-            firms, consumer and DTC brands, and growth-stage companies. For them I've built
-            internal web apps, automated client systems, CRMs, and VoIP/IVR phone systems,
-            run paid ads, and managed a consumer mobile app.
-          </p>
-          <p>
-            I start by finding where revenue leaks out of a funnel or an operation. Then I
-            design the fix, build it, market it, measure it, and keep improving it. One
-            person doing all of it means nothing gets lost in a handoff.
-          </p>
-          <div class="about__stats">
-            <div class="stat">
-              <span class="stat__num mono">20+</span>
-              <span class="stat__label">Disciplines</span>
-            </div>
-            <div class="stat">
-              <span class="stat__num mono">40%+</span>
-              <span class="stat__label">Revenue growth driven</span>
-            </div>
-            <div class="stat">
-              <span class="stat__num mono">50%+</span>
-              <span class="stat__label">Conversion rate lift</span>
-            </div>
-          </div>
-        </div>
+      <div class="gallery__grid">
+        <figure class="gallery__item">
+          <img src="work/sites/lif-program.jpg" loading="lazy" decoding="async" alt="The program steps leading into the root-cause story" />
+          <figcaption>Live In Fitness: the program steps leading into the root-cause story</figcaption>
+        </figure>
+        <figure class="gallery__item">
+          <img src="work/sites/lif-quiz.jpg" loading="lazy" decoding="async" alt="The quiz that starts the funnel" />
+          <figcaption>Live In Fitness: the quiz that starts the funnel</figcaption>
+        </figure>
+        <figure class="gallery__item">
+          <img src="work/sites/lif-form.jpg" loading="lazy" decoding="async" alt="Lead form with SMS consent, sent straight to the CRM" />
+          <figcaption>Live In Fitness: lead form with SMS consent, sent straight to the CRM</figcaption>
+        </figure>
+        <figure class="gallery__item">
+          <img src="work/sites/lif-testimonials.jpg" loading="lazy" decoding="async" alt="Testimonial cards" />
+          <figcaption>Live In Fitness: testimonial cards</figcaption>
+        </figure>
+        <figure class="gallery__item">
+          <img src="work/sites/lif-story.jpg" loading="lazy" decoding="async" alt="Transformation story slider" />
+          <figcaption>Live In Fitness: transformation story slider</figcaption>
+        </figure>
+        <figure class="gallery__item">
+          <img src="work/sites/fr-celebrity.jpg" loading="lazy" decoding="async" alt="Celebrity quote section" />
+          <figcaption>Fitness Retreat: celebrity quote section</figcaption>
+        </figure>
+        <figure class="gallery__item">
+          <img src="work/sites/fr-protocols.jpg" loading="lazy" decoding="async" alt="Tabbed program list" />
+          <figcaption>Fitness Retreat: tabbed program list</figcaption>
+        </figure>
+        <figure class="gallery__item">
+          <img src="work/sites/fr-results.jpg" loading="lazy" decoding="async" alt="Results carousel" />
+          <figcaption>Fitness Retreat: results carousel</figcaption>
+        </figure>
+        <figure class="gallery__item">
+          <img src="work/sites/fc-explore.jpg" loading="lazy" decoding="async" alt="Card grid linking the retreat, shop, recipes, and blog" />
+          <figcaption>Fit Culture: card grid linking the retreat, shop, recipes, and blog</figcaption>
+        </figure>
+        <figure class="gallery__item">
+          <img src="work/sites/fc-coach.jpg" loading="lazy" decoding="async" alt="Coach intro with a halftone pattern and quote card" />
+          <figcaption>Fit Culture: coach intro with a halftone pattern and quote card</figcaption>
+        </figure>
+        <figure class="gallery__item">
+          <img src="work/sites/fc-app.jpg" loading="lazy" decoding="async" alt="App section with phone mockup and feature list" />
+          <figcaption>Fit Culture: app section with phone mockup and feature list</figcaption>
+        </figure>
       </div>
-    </section>
+    </dialog>
 
     <!-- Contact -->
     <section class="contact" id="contact">
@@ -563,6 +513,6 @@
     </div>
   </footer>
 
-  <script src="script.js?v=33"></script>
+  <script src="script.js?v=34"></script>
 </body>
 </html>
