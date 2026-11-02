@@ -802,187 +802,27 @@
     if (type === "error") status.classList.add("is-error");
   }
 
-  /* ---- Skills constellation (desktop) ---- */
-  const constellationEl = document.getElementById("skillsConstellation");
-  const constellationNodes = document.getElementById("constellationNodes");
-  const constellationStage = document.getElementById("constellationStage");
-  const constellationDetail = document.getElementById("constellationDetail");
-  const constellationDetailNum = document.getElementById("constellationDetailNum");
-  const constellationDetailTitle = document.getElementById("constellationDetailTitle");
-  const constellationDetailList = document.getElementById("constellationDetailList");
-  const constellationBackdrop = document.getElementById("constellationBackdrop");
-  const constellationHint = document.getElementById("constellationHint");
-  const pillarEls = document.querySelectorAll(".pillars--fallback .pillar");
+  /* ---- Gallery dialogs (client website close-ups) ---- */
+  document.querySelectorAll("[data-gallery]").forEach(function (trigger) {
+    const dialog = document.getElementById(trigger.getAttribute("data-gallery"));
+    if (!dialog || typeof dialog.showModal !== "function") return;
+    let downX = 0;
 
-  if (constellationEl && constellationNodes && pillarEls.length) {
-    const desktopQuery = window.matchMedia("(min-width: 861px)");
-    const reducedMotionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
-
-    const skillsData = Array.from(pillarEls).map(function (pillar) {
-      return {
-        num: pillar.querySelector(".pillar__num").textContent.trim(),
-        title: pillar.querySelector(".pillar__title").textContent.trim(),
-        skills: Array.from(pillar.querySelectorAll(".pillar__list li")).map(function (li) {
-          return li.textContent.trim();
-        }),
-      };
+    trigger.addEventListener("mousedown", function (e) { downX = e.clientX; });
+    trigger.addEventListener("click", function (e) {
+      // A carousel drag that ends on the trigger is not a click
+      if (e.detail && Math.abs(e.clientX - downX) > 6) return;
+      dialog.showModal();
+      document.documentElement.classList.add("is-gallery-open");
     });
 
-    let rotationAngle = 0;
-    let autoRotate = true;
-    let activeIndex = null;
-    let rotationTimer = null;
-    let nodeButtons = [];
-    let orbitRadius = 200;
-
-    function getOrbitRadius() {
-      const stageW = constellationStage ? constellationStage.clientWidth : 640;
-      return Math.min(260, Math.max(160, stageW * 0.34));
-    }
-
-    function nodePosition(index, total) {
-      const angle = ((index / total) * 360 + rotationAngle) % 360;
-      const radian = (angle * Math.PI) / 180;
-      const x = orbitRadius * Math.cos(radian);
-      const y = orbitRadius * Math.sin(radian);
-      const zIndex = Math.round(100 + 50 * Math.cos(radian));
-      const opacity = Math.max(0.42, Math.min(1, 0.42 + 0.58 * ((1 + Math.sin(radian)) / 2)));
-      return { x: x, y: y, zIndex: zIndex, opacity: opacity };
-    }
-
-    function applyNodePositions() {
-      const total = skillsData.length;
-      nodeButtons.forEach(function (btn, index) {
-        const pos = nodePosition(index, total);
-        const isActive = activeIndex === index;
-        btn.style.transform = "translate(" + pos.x + "px, " + pos.y + "px)" + (isActive ? " scale(1.18)" : "");
-        btn.style.zIndex = String(isActive ? 200 : pos.zIndex);
-        btn.style.opacity = isActive ? "1" : String(pos.opacity);
-      });
-    }
-
-    function centerOnNode(index) {
-      const total = skillsData.length;
-      rotationAngle = 270 - (index / total) * 360;
-      applyNodePositions();
-    }
-
-    function showDetail(index) {
-      const item = skillsData[index];
-      if (!item || !constellationDetail) return;
-
-      if (constellationDetailNum) constellationDetailNum.textContent = item.num;
-      if (constellationDetailTitle) constellationDetailTitle.textContent = item.title;
-      if (constellationDetailList) {
-        constellationDetailList.innerHTML = item.skills.map(function (skill) {
-          return "<li>" + skill + "</li>";
-        }).join("");
-      }
-
-      constellationDetail.hidden = false;
-      if (constellationBackdrop) constellationBackdrop.hidden = false;
-      if (constellationHint) constellationHint.textContent = "Tap backdrop or press Esc to close";
-    }
-
-    function closeDetail() {
-      activeIndex = null;
-      autoRotate = true;
-      nodeButtons.forEach(function (btn) { btn.classList.remove("is-active"); });
-      if (constellationDetail) constellationDetail.hidden = true;
-      if (constellationBackdrop) constellationBackdrop.hidden = true;
-      if (constellationHint) constellationHint.textContent = "Click a node to explore";
-      startAutoRotate();
-    }
-
-    function toggleNode(index) {
-      if (activeIndex === index) {
-        closeDetail();
-        return;
-      }
-
-      activeIndex = index;
-      autoRotate = false;
-      stopAutoRotate();
-      centerOnNode(index);
-
-      nodeButtons.forEach(function (btn, i) {
-        btn.classList.toggle("is-active", i === index);
-        btn.setAttribute("aria-expanded", i === index ? "true" : "false");
-      });
-
-      showDetail(index);
-    }
-
-    function buildNodes() {
-      constellationNodes.innerHTML = "";
-      nodeButtons = skillsData.map(function (item, index) {
-        const btn = document.createElement("button");
-        btn.type = "button";
-        btn.className = "constellation__node";
-        btn.setAttribute("aria-expanded", "false");
-        btn.setAttribute("aria-label", item.title + " skills");
-        btn.innerHTML = "<span class=\"mono\">" + item.num + "</span><span class=\"constellation__node-label\">" + item.title + "</span>";
-        btn.addEventListener("click", function (e) {
-          e.stopPropagation();
-          toggleNode(index);
-        });
-        constellationNodes.appendChild(btn);
-        return btn;
-      });
-    }
-
-    function startAutoRotate() {
-      stopAutoRotate();
-      if (reducedMotionQuery.matches || !desktopQuery.matches) return;
-
-      rotationTimer = window.setInterval(function () {
-        if (!autoRotate) return;
-        rotationAngle = (rotationAngle + 0.28) % 360;
-        applyNodePositions();
-      }, 50);
-    }
-
-    function stopAutoRotate() {
-      if (rotationTimer) {
-        clearInterval(rotationTimer);
-        rotationTimer = null;
-      }
-    }
-
-    function initConstellation() {
-      if (!desktopQuery.matches) {
-        stopAutoRotate();
-        return;
-      }
-
-      orbitRadius = getOrbitRadius();
-      if (!nodeButtons.length) buildNodes();
-      applyNodePositions();
-      startAutoRotate();
-    }
-
-    if (constellationBackdrop) {
-      constellationBackdrop.addEventListener("click", closeDetail);
-    }
-
-    if (constellationStage) {
-      constellationStage.addEventListener("click", function (e) {
-        if (e.target === constellationStage && activeIndex !== null) closeDetail();
-      });
-    }
-
-    document.addEventListener("keydown", function (e) {
-      if (e.key === "Escape" && activeIndex !== null) closeDetail();
+    if (dialog.dataset.galleryReady) return;
+    dialog.dataset.galleryReady = "1";
+    dialog.addEventListener("close", function () {
+      document.documentElement.classList.remove("is-gallery-open");
     });
-
-    desktopQuery.addEventListener("change", initConstellation);
-    window.addEventListener("resize", function () {
-      if (!desktopQuery.matches) return;
-      orbitRadius = getOrbitRadius();
-      if (activeIndex !== null) centerOnNode(activeIndex);
-      else applyNodePositions();
+    dialog.addEventListener("click", function (e) {
+      if (e.target === dialog || e.target.closest("[data-gallery-close]")) dialog.close();
     });
-
-    initConstellation();
-  }
+  });
 })();

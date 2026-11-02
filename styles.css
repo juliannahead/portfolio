@@ -585,6 +585,25 @@ ul { list-style: none; }
   overflow: hidden;
   aspect-ratio: 2 / 1;
 }
+.case-card__media--button {
+  display: block;
+  width: 100%;
+  padding: 0;
+  background: none;
+  cursor: zoom-in;
+}
+.case-card__more {
+  background: none;
+  border: 0;
+  padding: 0;
+  margin: -4px 0 18px;
+  font: inherit;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--accent);
+  cursor: pointer;
+}
+.case-card__more:hover { text-decoration: underline; }
 .case-card__media img {
   display: block;
   width: 100%;
@@ -686,166 +705,9 @@ ul { list-style: none; }
 }
 .pillar__list li:hover { color: var(--white); padding-left: 6px; }
 
-/* Skills constellation — desktop interactive orbit */
-.constellation {
-  display: none;
-  margin-top: clamp(36px, 5vw, 56px);
-}
-.constellation__stage {
-  position: relative;
-  width: 100%;
-  min-height: clamp(520px, 62vw, 680px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-inline: auto;
-  max-width: 920px;
-}
-.constellation__backdrop {
-  position: absolute;
-  inset: 0;
-  z-index: 5;
-  border: 0;
-  background: transparent;
-  cursor: default;
-  padding: 0;
-}
-.constellation__orbit-ring {
-  position: absolute;
-  width: min(72vw, 520px);
-  height: min(72vw, 520px);
-  border-radius: 50%;
-  border: 1px solid var(--line-strong);
-  pointer-events: none;
-}
-.constellation__hub {
-  position: absolute;
-  z-index: 2;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 10px;
-  pointer-events: none;
-}
-.constellation__hub-dot {
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  background: var(--ink);
-}
-.constellation__hub-label {
-  font-size: 11px;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--grey-dim);
-}
-.constellation__nodes {
-  position: absolute;
-  inset: 0;
-  z-index: 3;
-}
-.constellation__node {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  width: 48px;
-  height: 48px;
-  margin: -24px 0 0 -24px;
-  border-radius: 50%;
-  border: 1px solid var(--line-strong);
-  background: var(--card);
-  color: var(--ink);
-  font-size: 12px;
-  font-variant-numeric: tabular-nums;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition:
-    border-color 0.35s var(--ease),
-    background 0.35s var(--ease),
-    color 0.35s var(--ease),
-    box-shadow 0.35s var(--ease),
-    transform 0.05s linear;
-  box-shadow: none;
-}
-.constellation__node:hover {
-  border-color: var(--ink);
-  box-shadow: var(--shadow);
-}
-.constellation__node.is-active {
-  border-color: var(--ink);
-  background: var(--ink);
-  color: var(--black);
-  box-shadow: var(--shadow);
-}
-.constellation__node-label {
-  position: absolute;
-  top: calc(100% + 8px);
-  left: 50%;
-  transform: translateX(-50%);
-  white-space: nowrap;
-  font-family: var(--font-body);
-  font-size: 11px;
-  font-weight: 500;
-  letter-spacing: 0.02em;
-  color: var(--grey);
-  pointer-events: none;
-  max-width: 140px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-.constellation__node.is-active .constellation__node-label {
-  color: var(--ink);
-  font-weight: 600;
-}
-.constellation__detail {
-  position: absolute;
-  left: 50%;
-  bottom: clamp(8px, 2vw, 24px);
-  transform: translateX(-50%);
-  z-index: 10;
-  width: min(320px, calc(100% - 32px));
-  background: var(--card);
-  border: 1px solid var(--line-strong);
-  border-radius: var(--radius);
-  padding: clamp(20px, 3vw, 28px);
-  box-shadow: var(--shadow);
-}
-.constellation__detail-num {
-  font-size: 12px;
-  color: var(--grey-dim);
-  letter-spacing: 0.1em;
-}
-.constellation__detail-title {
-  font-family: var(--font-display);
-  font-weight: 600;
-  font-size: 1.15rem;
-  letter-spacing: -0.02em;
-  margin: 10px 0 14px;
-}
-.constellation__detail-list li {
-  color: var(--grey);
-  font-size: 0.92rem;
-  padding: 6px 0;
-  border-top: 1px solid var(--line);
-}
-.constellation__hint {
-  text-align: center;
-  margin-top: 20px;
-  font-size: 13px;
-  color: var(--grey-dim);
-}
-
-@media (min-width: 861px) {
-  .constellation { display: block; }
-  .pillars--fallback { display: none; }
-}
-
-@media (max-width: 860px) {
-  .constellation { display: none !important; }
-  .pillars--fallback { display: grid; }
-}
+.pillars--simple { grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); }
+.pillars--simple .pillar__title { margin: 0 0 12px; }
+.pillar__text { color: var(--grey); font-size: 0.98rem; line-height: 1.6; }
 
 /* ============================================================
    About
@@ -1057,3 +919,58 @@ ul { list-style: none; }
   }
   .about__stats .stat:first-child { grid-column: 1 / -1; }
 }
+
+/* ============================================================
+   Gallery (client website close-ups)
+   ============================================================ */
+.gallery {
+  width: min(1100px, calc(100% - 32px));
+  margin: auto;
+  max-height: calc(100vh - 48px);
+  padding: 0;
+  border: 1px solid #2a2a2a;
+  border-radius: 16px;
+  background: #0b0b0b;
+  color: #f2f2f2;
+  overflow: auto;
+  overscroll-behavior: contain;
+}
+.gallery::backdrop { background: rgba(0, 0, 0, 0.8); }
+.gallery__head {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  background: #0b0b0b;
+  border-bottom: 1px solid #2a2a2a;
+}
+.gallery__title {
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+.gallery__close {
+  width: 40px;
+  height: 40px;
+  border: 1px solid #2a2a2a;
+  border-radius: 50%;
+  background: none;
+  color: inherit;
+  font-size: 24px;
+  line-height: 1;
+  cursor: pointer;
+}
+.gallery__close:hover { border-color: var(--accent); color: var(--accent); }
+.gallery__grid { display: grid; gap: 36px; padding: 24px 20px 32px; }
+.gallery__item img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border: 1px solid #2a2a2a;
+  border-radius: 10px;
+}
+.gallery__item figcaption { margin-top: 10px; font-size: 14px; color: #a5a5a5; }
+html.is-gallery-open { overflow: hidden; }
