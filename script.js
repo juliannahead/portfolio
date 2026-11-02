@@ -96,7 +96,7 @@
       "    if(i>=u_n)break;",
       "    vec2 d=c-u_b[i].xy;",
       "    float s=u_b[i].w,an=atan(d.y,d.x);",
-      "    float wb=1.+.17*sin(2.*an+s+u_t*.35)+.09*sin(3.*an-s*1.7+u_t*.5);",
+      "    float wb=1.+.17*sin(2.*an+s+u_t*.16)+.09*sin(3.*an-s*1.7+u_t*.23);",
       "    float r=u_b[i].z*wb;",
       "    f+=r*r/(dot(d,d)+1.);",
       "  }",
@@ -155,7 +155,7 @@
           y: top + r + Math.random() * Math.max(h - top - 2 * r, 1),
           vx: 0, vy: 0, r: r, rd: r,
           phase: Math.random() * Math.PI * 2,
-          speed: 0.00015 + Math.random() * 0.0002
+          speed: 0.00006 + Math.random() * 0.00008
         });
       }
     }
@@ -178,28 +178,31 @@
       const k = dt / 16.67;
       blobs.forEach(function (b) {
         if (b === dragged) {
-          b.vx = (pointer.x - b.x) * 0.25;
-          b.vy = (pointer.y - b.y) * 0.25;
+          b.vx = (pointer.x - b.x) * 0.1;
+          b.vy = (pointer.y - b.y) * 0.1;
         } else {
           // Lava-lamp cycle: rise, stall, sink, with a little sideways drift
-          const ty = Math.sin(t * b.speed + b.phase) * 0.6;
-          const tx = Math.cos(t * b.speed * 0.7 + b.phase * 1.3) * 0.12;
-          b.vx += (tx - b.vx) * 0.01 * k;
-          b.vy += (ty - b.vy) * 0.01 * k;
+          const ty = Math.sin(t * b.speed + b.phase) * 0.35;
+          const tx = Math.cos(t * b.speed * 0.7 + b.phase * 1.3) * 0.08;
+          b.vx += (tx - b.vx) * 0.005 * k;
+          b.vy += (ty - b.vy) * 0.005 * k;
           // Cursor pushes nearby blobs away
           if (pointer.inside && !dragged) {
             const dx = b.x - pointer.x, dy = b.y - pointer.y;
-            const reach = b.r * 2.2;
+            const reach = b.r * 2.6;
             const d2 = dx * dx + dy * dy;
             if (d2 < reach * reach && d2 > 1) {
               const d = Math.sqrt(d2);
-              const f = (1 - d / reach) * 0.9 * k;
+              const f = (1 - d / reach) * 0.12 * k;
               b.vx += (dx / d) * f;
               b.vy += (dy / d) * f;
             }
           }
-          b.vx *= Math.pow(0.97, k);
-          b.vy *= Math.pow(0.97, k);
+          b.vx *= Math.pow(0.985, k);
+          b.vy *= Math.pow(0.985, k);
+          // Lava is heavy: cap the speed so nothing darts
+          const sp = Math.hypot(b.vx, b.vy);
+          if (sp > 1.2) { b.vx *= 1.2 / sp; b.vy *= 1.2 / sp; }
         }
         // Blobs swell and shrink slightly as they move
         b.rd = b.r * (1 + 0.07 * Math.sin(t * b.speed * 3 + b.phase));
@@ -207,10 +210,10 @@
         b.y += b.vy * k;
         // Soft walls (the top one sits below the fixed nav)
         const m = b.r * 0.6;
-        if (b.x < m) b.vx += (m - b.x) * 0.02 * k;
-        if (b.x > w - m) b.vx -= (b.x - (w - m)) * 0.02 * k;
-        if (b.y < top + b.r) b.vy += (top + b.r - b.y) * 0.02 * k;
-        if (b.y > h - m) b.vy -= (b.y - (h - m)) * 0.02 * k;
+        if (b.x < m) b.vx += (m - b.x) * 0.006 * k;
+        if (b.x > w - m) b.vx -= (b.x - (w - m)) * 0.006 * k;
+        if (b.y < top + b.r) b.vy += (top + b.r - b.y) * 0.006 * k;
+        if (b.y > h - m) b.vy -= (b.y - (h - m)) * 0.006 * k;
       });
     }
 
