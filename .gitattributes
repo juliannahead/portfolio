@@ -1,0 +1,7 @@
+# Repo-only files. The deploy is built from `git archive`, which skips these,
+# so they never end up on the live site.
+.gitattributes export-ignore
+.gitignore export-ignore
+README.md export-ignore
+julianna-head-launch-checklist.md export-ignore
+julianna-head-schema-markup.html export-ignore
