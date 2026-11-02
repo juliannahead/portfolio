@@ -964,6 +964,7 @@ ul { list-style: none; }
   cursor: pointer;
 }
 .gallery__close:hover { border-color: var(--accent); color: var(--accent); }
+.gallery__intro { padding: 20px 20px 0; max-width: 70ch; color: #a5a5a5; font-size: 15px; line-height: 1.6; }
 .gallery__grid { display: grid; gap: 36px; padding: 24px 20px 32px; }
 .gallery__item img {
   display: block;
