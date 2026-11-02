@@ -174,7 +174,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
 
-  <link rel="stylesheet" href="styles.css?v=54" />
+  <link rel="stylesheet" href="styles.css?v=55" />
 </head>
 <body>
   <!-- Navigation -->
@@ -184,7 +184,7 @@
       <nav class="nav__links" aria-label="Primary">
         <a href="#about">Who I am</a>
         <a href="#capabilities">What I do</a>
-        <a href="#work">Work</a>
+        <a href="#work">Featured</a>
         <a href="#contact" class="nav__cta">Contact</a>
       </nav>
       <button class="nav__toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false">
@@ -194,7 +194,7 @@
     <nav class="mobile-menu" id="mobileMenu" aria-label="Mobile">
       <a href="#about">Who I am</a>
       <a href="#capabilities">What I do</a>
-      <a href="#work">Work</a>
+      <a href="#work">Featured</a>
       <a href="#contact" class="mobile-menu__cta">Contact</a>
     </nav>
   </header>
@@ -341,18 +341,20 @@
           <article class="case-card">
             <button type="button" class="case-card__media case-card__media--button" data-gallery="sitesGallery"
               aria-label="Open the client website designs">
-              <img src="work/sites/cover.jpg" width="1440" height="900" loading="lazy" decoding="async"
-                alt="Live In Fitness homepage hero" />
+              <img src="work/sites/lif-pricing.jpg" width="1600" height="726" loading="lazy" decoding="async"
+                alt="Live In Fitness pricing section with a looping video beside the copy" />
             </button>
             <p class="case-card__client">Wellness &amp; Fitness Clients</p>
             <h3 class="case-card__title">Client Websites</h3>
             <p class="case-card__desc">
-              Websites for Live In Fitness, Fitness Retreat, and Fit Culture: quiz funnels,
-              lead forms with SMS consent, results carousels, and calls to book a strategy call.
+              Websites for Live In Fitness, Fitness Retreat, and Fit Culture, built for phone,
+              tablet, and desktop. Carousels, scroll effects, and parallax, on pages that load
+              fast: resized images, and videos compressed with ffmpeg and served from S3 and
+              CloudFront.
             </p>
             <button type="button" class="case-card__more" data-gallery="sitesGallery">See the designs &rarr;</button>
             <ul class="case-card__tags">
-              <li>Web Design</li><li>Funnels</li><li>Lead Capture</li><li>UX/UI</li>
+              <li>Web Design</li><li>Responsive</li><li>Performance</li><li>UX/UI</li>
             </ul>
           </article>
 
@@ -411,50 +413,27 @@
         <h2 class="gallery__title" id="sitesGalleryTitle">Client websites</h2>
         <button type="button" class="gallery__close" data-gallery-close aria-label="Close">&times;</button>
       </div>
+      <p class="gallery__intro">Every site is built for phone, tablet, and desktop, with carousels, scroll effects, and parallax. Images are resized and videos compressed with ffmpeg, then served from S3 and CloudFront so pages load fast.</p>
       <div class="gallery__grid">
         <figure class="gallery__item">
-          <img src="work/sites/lif-program.jpg" loading="lazy" decoding="async" alt="The program steps leading into the root-cause story" />
-          <figcaption>Live In Fitness: the program steps leading into the root-cause story</figcaption>
+          <img src="work/sites/lif-pricing.jpg" loading="lazy" decoding="async" alt="Split pricing section with a looping kitchen video" />
+          <figcaption>Live In Fitness: split pricing section with a looping video, compressed with ffmpeg and served from S3 and CloudFront</figcaption>
         </figure>
         <figure class="gallery__item">
-          <img src="work/sites/lif-quiz.jpg" loading="lazy" decoding="async" alt="The quiz that starts the funnel" />
-          <figcaption>Live In Fitness: the quiz that starts the funnel</figcaption>
+          <img src="work/sites/lif-press.jpg" loading="lazy" decoding="async" alt="Press carousel with a magazine cover layered over the article" />
+          <figcaption>Live In Fitness: press carousel with arrow controls and a layered magazine cover</figcaption>
         </figure>
         <figure class="gallery__item">
-          <img src="work/sites/lif-form.jpg" loading="lazy" decoding="async" alt="Lead form with SMS consent, sent straight to the CRM" />
-          <figcaption>Live In Fitness: lead form with SMS consent, sent straight to the CRM</figcaption>
+          <img src="work/sites/fr-nav.jpg" loading="lazy" decoding="async" alt="Sticky navigation bar blurring the page behind it" />
+          <figcaption>Fitness Retreat: sticky frosted-glass nav with dropdown menus and click-to-call</figcaption>
         </figure>
         <figure class="gallery__item">
-          <img src="work/sites/lif-testimonials.jpg" loading="lazy" decoding="async" alt="Testimonial cards" />
-          <figcaption>Live In Fitness: testimonial cards</figcaption>
+          <img src="work/sites/fr-stats.jpg" loading="lazy" decoding="async" alt="Two results stat cards with icons" />
+          <figcaption>Fitness Retreat: results stat cards with icons</figcaption>
         </figure>
         <figure class="gallery__item">
-          <img src="work/sites/lif-story.jpg" loading="lazy" decoding="async" alt="Transformation story slider" />
-          <figcaption>Live In Fitness: transformation story slider</figcaption>
-        </figure>
-        <figure class="gallery__item">
-          <img src="work/sites/fr-celebrity.jpg" loading="lazy" decoding="async" alt="Celebrity quote section" />
-          <figcaption>Fitness Retreat: celebrity quote section</figcaption>
-        </figure>
-        <figure class="gallery__item">
-          <img src="work/sites/fr-protocols.jpg" loading="lazy" decoding="async" alt="Tabbed program list" />
-          <figcaption>Fitness Retreat: tabbed program list</figcaption>
-        </figure>
-        <figure class="gallery__item">
-          <img src="work/sites/fr-results.jpg" loading="lazy" decoding="async" alt="Results carousel" />
-          <figcaption>Fitness Retreat: results carousel</figcaption>
-        </figure>
-        <figure class="gallery__item">
-          <img src="work/sites/fc-explore.jpg" loading="lazy" decoding="async" alt="Card grid linking the retreat, shop, recipes, and blog" />
-          <figcaption>Fit Culture: card grid linking the retreat, shop, recipes, and blog</figcaption>
-        </figure>
-        <figure class="gallery__item">
-          <img src="work/sites/fc-coach.jpg" loading="lazy" decoding="async" alt="Coach intro with a halftone pattern and quote card" />
-          <figcaption>Fit Culture: coach intro with a halftone pattern and quote card</figcaption>
-        </figure>
-        <figure class="gallery__item">
-          <img src="work/sites/fc-app.jpg" loading="lazy" decoding="async" alt="App section with phone mockup and feature list" />
-          <figcaption>Fit Culture: app section with phone mockup and feature list</figcaption>
+          <img src="work/sites/fc-superfoods.jpg" loading="lazy" decoding="async" alt="Superfoods card carousel with arrow controls" />
+          <figcaption>Fit Culture: swipeable superfoods card carousel</figcaption>
         </figure>
       </div>
     </dialog>
@@ -513,6 +492,6 @@
     </div>
   </footer>
 
-  <script src="script.js?v=34"></script>
+  <script src="script.js?v=35"></script>
 </body>
 </html>
